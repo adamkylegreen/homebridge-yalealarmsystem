@@ -127,10 +127,10 @@ function getAuthHeaders() {
 }
 
 function authorize() {
-    var payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
-    if (refresh_token === "") {
+    //var payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
+  //  if (refresh_token === "") {
         payload = `grant_type=password&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-    };
+   // };
     
     return fetch(_HOST + "/o/token/",
         {
