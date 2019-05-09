@@ -35,19 +35,15 @@ function YaleAlarm(log, config) {
     .on('set', this.setState.bind(this));
 }
 
-YaleAlarm.prototype.getState = function(callback) {
-    this.log("Getting current state...");
-
+YaleAlarm.prototype.getState = function(callback) {    
     //make a request to get auth token
     authorize()
         .then(response => response.json())//load it as json
         //save the token to global variable
-        .then(data => {
-            this.log('token received');
-            access_token = data.access_token;
-            this.log('access_token' + data.access_token);
+        .then(data => {           
+            access_token = data.access_token;           
             refresh_token = data.refresh_token;
-            this.log('refresh_token' + data.refresh_token);
+
             //fetch current url using new token.
             return fetch(_HOST + "/api/panel/mode/",
                 {
@@ -63,18 +59,13 @@ YaleAlarm.prototype.getState = function(callback) {
         .then(response =>
             response.json()
         ) // Load the response as json
-        .then(res => {
-            this.log('got to getstatefinal');
-            this.log('mode:' + res.data[0].mode);
+        .then(res => {        
             callback(null, res.data[0].mode === 'arm');         
         }).catch(console.log);    
 }
 
 YaleAlarm.prototype.setState = function(state, callback) {
-    var alarmState = (state == Characteristic.LockTargetState.SECURED) ? "arm" : "disarm";
-
-    console.log(`Set Alarm state to ${alarmState}`);
-
+    var alarmState = (state == Characteristic.LockTargetState.SECURED) ? "arm" : "disarm";    
     //make a request to get auth token
     authorize()
         .then(response => response.json())//load it as json
@@ -99,10 +90,8 @@ YaleAlarm.prototype.setState = function(state, callback) {
         .then(response =>
             response.json()) // Load the response as json
         .then(res => {
-                       
             var currentState = (state == Characteristic.LockTargetState.SECURED) ? Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
-            this.service.setCharacteristic(Characteristic.LockCurrentState, currentState);
-            console.log(`Sucessful Setting State to ${currentState}`);
+            this.service.setCharacteristic(Characteristic.LockCurrentState, currentState);           
             callback(null, true); // success
 
         }).catch((response) => {
@@ -113,13 +102,6 @@ YaleAlarm.prototype.setState = function(state, callback) {
 
 YaleAlarm.prototype.getServices = function() {
     return [this.service];
-}
-
-
-function getAuthHeaders() {
-    return {
-        "Authorization": "Bearer " + access_token
-    }
 }
 
 function authorize() {
