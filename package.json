@@ -1,6 +1,6 @@
 {
   "name": "homebridge-yalealarmsystem",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Homebridge plugin for the Yale Smart Burglar Alarm System",
   "main": "index.js",
   "license": "MIT",
@@ -21,6 +21,6 @@
     "homebridge": ">=0.2.0"
   },
   "dependencies": {
-    "yalealarmsystem": "^1.0.1"
+    "node-fetch": "^1.7.3"
   }
 }
