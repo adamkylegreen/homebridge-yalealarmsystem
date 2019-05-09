@@ -62,7 +62,7 @@ YaleAlarm.prototype.getState = function(callback) {
             response.json()
         ) // Load the response as json
         .then(res => {
-            this.log('refresh_token' + data.refresh_token);
+            this.log('mode:' + res.data[0].mode);
             callback(null, res.data[0].mode === 'arm');         
         }).catch(console.log);    
 }
@@ -94,9 +94,7 @@ YaleAlarm.prototype.setState = function(state, callback) {
             );
         })
         .then(response =>
-            this.log('here ok');
-            return response.json();
-        ) // Load the response as json
+            response.json()) // Load the response as json
         .then(res => {
             this.log('here ok 2')
             var currentState = (state == Characteristic.LockTargetState.SECURED) ?
