@@ -6,6 +6,8 @@ var _HOST = "https://mob.yalehomesystem.co.uk/yapi";
 var yaleAuthToken = 'VnVWWDZYVjlXSUNzVHJhcUVpdVNCUHBwZ3ZPakxUeXNsRU1LUHBjdTpkd3RPbE15WEtENUJ5ZW1GWHV0am55eGhrc0U3V0ZFY2p0dFcyOXRaSWNuWHlSWHFsWVBEZ1BSZE1xczF4R3VwVTlxa1o4UE5ubGlQanY5Z2hBZFFtMHpsM0h4V3dlS0ZBcGZzakpMcW1GMm1HR1lXRlpad01MRkw3MGR0bmNndQ==';
 var refresh_token = '';
 var access_token = '';
+var username = '';
+var password = '';
 
 module.exports = function(homebridge) {
     Service = homebridge.hap.Service;
@@ -18,6 +20,8 @@ function YaleAlarm(log, config) {
     this.log = log;
     this.name = config["name"];
     this.config = config;
+    username = this.config.username;
+    password = this.config.password;
 
     this.service = new Service.LockMechanism(this.name);
 
@@ -109,7 +113,7 @@ function getAuthHeaders() {
 function authorize() {
     var payload = `grant_type=refresh_token&refresh_token=${refresh_token}`;
     if (refresh_token === "") {
-        payload = `grant_type=password&username=${encodeURIComponent(this.config.username)}&password=${encodeURIComponent(this.config.password)}`;
+        payload = `grant_type=password&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
     };
     return fetch(_HOST + "/o/token/",
         {
