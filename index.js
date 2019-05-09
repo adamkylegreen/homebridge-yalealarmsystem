@@ -54,7 +54,11 @@ YaleAlarm.prototype.getState = function(callback) {
             return fetch(_HOST + "/api/panel/mode/",
                 {
                     method: 'GET',
-                    headers: getAuthHeaders()
+                    headers: {
+                        "Authorization": "Bearer " + access_token,
+                        'Accept': 'application/json, application/xml, text/plain, text/html, *.*',
+                        'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
+                    }
                 }
             );
         })
@@ -62,6 +66,7 @@ YaleAlarm.prototype.getState = function(callback) {
             response.json()
         ) // Load the response as json
         .then(res => {
+            this.log('got to getstatefinal');
             this.log('mode:' + res.data[0].mode);
             callback(null, res.data[0].mode === 'arm');         
         }).catch(console.log);    
@@ -126,6 +131,7 @@ function authorize() {
     if (refresh_token === "") {
         payload = `grant_type=password&username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
     };
+    
     return fetch(_HOST + "/o/token/",
         {
             method: 'POST',
