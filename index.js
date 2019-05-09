@@ -73,7 +73,7 @@ YaleAlarm.prototype.getState = function(callback) {
 YaleAlarm.prototype.setState = function(state, callback) {
     var alarmState = (state == Characteristic.LockTargetState.SECURED) ? "arm" : "disarm";
 
-    console.log('Set Alarm state to ${alarmState}');
+    console.log(`Set Alarm state to ${alarmState}`);
 
     //make a request to get auth token
     authorize()
@@ -99,12 +99,11 @@ YaleAlarm.prototype.setState = function(state, callback) {
         .then(response =>
             response.json()) // Load the response as json
         .then(res => {
-           
-            var currentState = (state == Characteristic.LockTargetState.SECURED) ?
-                Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
-
+                       
+            var currentState = (state == Characteristic.LockTargetState.SECURED) ? Characteristic.LockCurrentState.SECURED : Characteristic.LockCurrentState.UNSECURED;
             this.service.setCharacteristic(Characteristic.LockCurrentState, currentState);
-            callback(null); // success
+            console.log(`Sucessful Setting State to ${currentState}`);
+            callback(null, true); // success
 
         }).catch((response) => {
             this.log('catch')
